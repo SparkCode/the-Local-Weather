@@ -1,0 +1,10 @@
+#temperature {
+    display: inline-block;
+}
+#icon {
+    display: inline-block;
+}
+
+.container-fluid {
+    max-width: 500px;
+}
