@@ -14,40 +14,40 @@
 <body>
 <div class="container-fluid">
     <div class="jumbotron">
-    <h1 id="location">Weather in London, GB</h1>
-    <img id="icon" src="http://openweathermap.org/img/w/10d.png" alt="icon" class="img-responsive">
-    <h2 id="temperature">15.1 *C</h2>
+    <h1 id="location"></h1>
+    <img id="icon" alt="icon" class="img-responsive">
+    <h2 id="temperature"></h2>
 
-    <p>Scatter clouds</p>
-    <p>get at 3/10/2017 4:35:00 PM</p>
+    <p id="weatherMain"></p>
+    <p id="time"></p>
     <table class="table table-striped table-bordered">
-        <tr id="Wind">
+        <tr>
             <td>Wind</td>
-            <td>Light breeze 3.1  m/s <br> South ( 180 )</td>
+            <td id="wind"></td>
         </tr>
-        <tr id="Cloudiness">
+        <tr >
             <td>Cloudiness</td>
-            <td>Overcast clouds</td>
+            <td id="cloudiness"></td>
         </tr>
-        <tr id="Pressure">
+        <tr>
             <td>Pressure</td>
-            <td>1025 hpa</td>
+            <td id="pressure"></td>
         </tr>
-        <tr id="Humidity">
+        <tr>
             <td>Humidity</td>
-            <td>81 %</td>
+            <td id="humidity"></td>
         </tr>
-        <tr id="Sunrise">
+        <tr>
             <td>Sunrise</td>
-            <td>10:24 </td>
+            <td id="sunrise"></td>
         </tr>
-        <tr id="Sunset">
+        <tr>
             <td>Sunset</td>
-            <td>21:57</td>
+            <td id="sunset"></td>
         </tr>
-        <tr id="Geo coords">
+        <tr>
             <td>Geo coords</td>
-            <td>[51.51, -0.13]</td>
+            <td id="geoCoords"></td>
         </tr>
     </table>
 </div>
