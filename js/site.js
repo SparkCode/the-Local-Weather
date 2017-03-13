@@ -59,25 +59,52 @@ weatherType = {
 };
 
 $(document).ready(function () {
-    getData();
-    getCoordinates();
+    updateData();
+    getCoordinates(updateData);
 });
 
-function getCoordinates() {
+function getCoordinates(callback) {
     if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(getData);
+        navigator.geolocation.getCurrentPosition(function (position) {
+            localStorage.latitude = position.coords.latitude;
+            localStorage.longitude = position.coords.longitude;
+            callback();
+        });
     }
 }
 
-function getData(position) {
-    var url = "http://api.openweathermap.org/data/2.5/" +  (position == null ? "weather?q=London,uk"
-        : "weather?lat=" + position.coords.latitude + "&lon=" + position.coords.longitude);
+function getLocalStorageCoordinates() {
+    var latitude = localStorage.getItem("latitude");
+    var longitude = localStorage.getItem("longitude");
+    return latitude != null ? {latitude: latitude, longitude: longitude} : null;
+}
 
-    debugger;
+function isCelsius() {
+    var units =  localStorage.getItem("units");
+    return units == "C" || units == null;
+}
+
+function changeUnitFormat() {
+    var units = localStorage.getItem("units");
+    localStorage.setItem("units", (units == "F" ? "C" : "F"));
+    updateData();
+}
+
+function updateData() {
+    var data = {APPID: "783f2c3fbf8654fdcadad831498b7dcf"}; // Normally you want to avoid exposing API keys on CodePen, but we haven't been able to find a keyless API for weather.
+    data.units = isCelsius() ? "metric" : "imperial";
+    var position = getLocalStorageCoordinates();
+    if (position == null)
+        data.q = "London,uk";
+    else {
+        data.lat = position.latitude;
+        data.lon = position.longitude;
+    }
+
     $.ajax({
         dataType: "json",
-        url: url,
-        data: {units: "metric", APPID: "783f2c3fbf8654fdcadad831498b7dcf"}, // Normally you want to avoid exposing API keys on CodePen, but we haven't been able to find a keyless API for weather.
+        url: "http://api.openweathermap.org/data/2.5/weather",
+        data: data,
         success: renderData
     });
 }
@@ -88,7 +115,7 @@ function renderData(data) {
         location: "Weather in " + data["name"]  + ", " + data["sys"]["country"],
         icon: "http://openweathermap.org/img/w/" + data["weather"][0]["icon"] + ".png",
         weatherMain: weatherType["id" + data["weather"][0]["id"]],
-        temperature: data["main"]["temp"] + " °C",
+        temperature: data["main"]["temp"] + " °",
         time: "get at " + new Date().toLocaleString(),
         wind: data["wind"]["speed"] + " meter/sec<br>" + data["wind"]["deg"] + "°",
         cloudiness: data["clouds"]["all"] + " %",
@@ -98,6 +125,11 @@ function renderData(data) {
         sunset: new Date(data["sys"]["sunset"] * 1000).toLocaleTimeString(),
         geoCoords: "[" + data["coord"]["lat"] + ', ' + data["coord"]["lon"] + "]"
     };
+
+    preparedData.temperature += (isCelsius()  ? "C" : "F")
+        + ' <span ><a href="#" onclick="changeUnitFormat()">'
+        + (isCelsius() ? 'make Celsius to Fahrenheit?' : 'make Fahrenheit to Celsius?') +'</a></span>';
+
 
     Object.keys(preparedData).forEach(function (key) {
         var element = document.getElementById(key);
