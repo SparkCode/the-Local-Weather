@@ -1,6 +1,6 @@
 #temperature {
-    display: inline-block;
-}
+     display: inline-block;
+ }
 #icon {
     display: inline-block;
 }
@@ -15,4 +15,9 @@ body {
 
 span {
     font-size: 16px;
+}
+
+.container-fluid{
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
