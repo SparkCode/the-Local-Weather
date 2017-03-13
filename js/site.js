@@ -115,7 +115,8 @@ function renderData(data) {
         location: "Weather in " + data["name"]  + ", " + data["sys"]["country"],
         icon: "http://openweathermap.org/img/w/" + data["weather"][0]["icon"] + ".png",
         weatherMain: weatherType["id" + data["weather"][0]["id"]],
-        temperature: data["main"]["temp"] + " °",
+        temperature: data["main"]["temp"] + " °" + (isCelsius()  ? "C" : "F"),
+        changer: (isCelsius() ? 'make Fahrenheit?' : 'make Celsius?'),
         time: "get at " + new Date().toLocaleString(),
         wind: data["wind"]["speed"] + " meter/sec<br>" + data["wind"]["deg"] + "°",
         cloudiness: data["clouds"]["all"] + " %",
@@ -125,11 +126,6 @@ function renderData(data) {
         sunset: new Date(data["sys"]["sunset"] * 1000).toLocaleTimeString(),
         geoCoords: "[" + data["coord"]["lat"] + ', ' + data["coord"]["lon"] + "]"
     };
-
-    preparedData.temperature += (isCelsius()  ? "C" : "F")
-        + ' <span ><a href="#" onclick="changeUnitFormat()">'
-        + (isCelsius() ? 'make Celsius to Fahrenheit?' : 'make Fahrenheit to Celsius?') +'</a></span>';
-
 
     Object.keys(preparedData).forEach(function (key) {
         var element = document.getElementById(key);
